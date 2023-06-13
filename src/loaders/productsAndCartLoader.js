@@ -8,7 +8,7 @@ export const productsAndCartLoader = async () => {
     // get cart
     const savedCart = getStoredCart();
     const initialCart = [];
-    
+
     for (const id in savedCart) {
         const addedProduct = products.find(product => product.id === id);
         if (addedProduct) {
