@@ -1,10 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/UserContext';
 
 const Login = () => {
     const { loginUserEmail } = useContext(AuthContext)
+    const navigate = useNavigate();
+
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     const [error, setError] = useState(null)
 
@@ -20,10 +24,9 @@ const Login = () => {
             loginUserEmail(email, password)
                 .then((result) => {
                     const user = result.user;
-                    console.log(user);
-                    setError("Success")
-                    form.reset();
-
+                    console.log(user)
+                    form.reset()
+                    navigate(from, { replace: true });
                 })
                 .case((error) => {
                     console.error(error);

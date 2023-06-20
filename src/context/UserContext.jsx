@@ -7,6 +7,7 @@ const auth = getAuth(app);
 
 const UserContext = ({ children }) => {
     const [user, setUser] = useState({});
+    const [loading, setLoading] = useState(true);
 
     // Register email and password form
     const signupCreate = (email, password) => {
@@ -14,6 +15,7 @@ const UserContext = ({ children }) => {
     }
     // Login email and password 
     const loginUserEmail = (email, password) => {
+        setLoading(true)
         return signInWithEmailAndPassword(auth, email, password);
     }
     // LogOut in the user 
@@ -26,6 +28,7 @@ const UserContext = ({ children }) => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
             console.log("Current User", currentUser);
             setUser(currentUser);
+            setLoading(false);
         })
 
         return () => {
@@ -34,7 +37,7 @@ const UserContext = ({ children }) => {
 
     }, [])
 
-    const authInfo = { user, signupCreate, logoOut, loginUserEmail }
+    const authInfo = { user, signupCreate, logoOut, loginUserEmail, loading }
 
     return (
         <AuthContext.Provider value={authInfo}>
